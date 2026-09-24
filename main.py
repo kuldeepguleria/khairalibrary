@@ -48,7 +48,7 @@ async def serve_ui():
             .chat-container { 
                 width: 100%; 
                 max-width: 480px; 
-                height: 100vh; 
+                height: 100dvh; 
                 display: flex; 
                 flex-direction: column; 
                 background: #0b141a; 
@@ -137,7 +137,7 @@ async def serve_ui():
 
             .input-area { 
                 display: flex; 
-                padding: 8px 10px; 
+                padding: 8px 10px calc(14px + env(safe-area-inset-bottom)) 10px; 
                 background: #202c33; 
                 gap: 8px; 
                 align-items: center; 
