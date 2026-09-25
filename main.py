@@ -116,12 +116,16 @@ async def serve_ui():
 
             .messages, #chatBox {
             flex: 1;
+            min-height: 0;
             padding: 12px 14px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 6px;
             background: #0b141a;
+        }
+        .quick-chips {
+            margin-top: auto;
         }
 
         .msg {
@@ -239,7 +243,7 @@ async def serve_ui():
         <div class="messages" id="chatBox">
             <div class="msg bot">Hey friend! 👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</div>
         </div>
-
+        
         <div class="quick-chips">
             <span class="chip" onclick="sendQuick('Library fees, timings aur desk rules kya hain?')">Library Rules & Fees</span>
             <span class="chip" onclick="sendQuick('Pichhle kuch dino se padhai me bilkul focus nahi ban raha')">Focus Problem</span>
