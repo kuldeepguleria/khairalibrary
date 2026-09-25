@@ -183,8 +183,8 @@ async def serve_ui():
         <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(11,20,26,0.95); z-index:999; display:flex; justify-content:center; align-items:center; padding:20px;">
             <div style="background:#202c33; width:100%; max-width:360px; border-radius:12px; padding:20px; text-align:center;">
                 <h3 style="color:#e9edef; margin-bottom:8px;">Youth Library Khaira Khurd</h3>
-                <p style="color:#8696a0; font-size:13px; margin-bottom:15px;">Ek baar apna Name aur WhatsApp number darj karein:</p>
-                <input id="regName" placeholder="Aapka Name" style="width:100%; padding:10px; margin-bottom:10px; background:#121b22; border:1px solid #2a3942; border-radius:6px; color:#fff; outline:none;" />
+                <p style="color:#8696a0; font-size:13px; margin-bottom:15px;">Please enter your Name and Mobile number:</p>
+                <input id="regName" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:10px; background:#121b22; border:1px solid #2a3942; border-radius:6px; color:#fff; outline:none;" />
                 <input id="regPhone" type="tel" maxlength="10" placeholder="10-digit Mobile Number" style="width:100%; padding:10px; margin-bottom:15px; background:#121b22; border:1px solid #2a3942; border-radius:6px; color:#fff; outline:none;" />
                 <button onclick="submitReg()" style="width:100%; padding:10px; background:#00a884; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Start Chat</button>
             </div>
