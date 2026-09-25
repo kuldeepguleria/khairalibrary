@@ -46,25 +46,35 @@ async def serve_ui():
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
             body { background: #121b22; display: flex; justify-content: center; align-items: flex-start; height: 100vh; overflow: hidden; }
             
-            .chat-container { 
-                width: 100%; 
-                max-width: 480px; 
-                height: 100dvh; 
-                display: flex; 
-                flex-direction: column; 
-                background: #0b141a; 
-                box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
-            }
+            .chat-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background-color: #0b141a;
+            position: relative;
+        }
 
-            .header { 
-                background: #202c33; 
-                color: #e9edef; 
-                padding: 10px 16px; 
-                display: flex; 
-                align-items: center; 
-                gap: 12px; 
-                border-bottom: 1px solid #2a3942; 
-            }
+            .header {
+            background: #202c33;
+            color: #e9edef;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            border-bottom: 1px solid rgba(134, 150, 160, 0.15);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+        }
+
+        .input-area {
+            display: flex;
+            padding: 8px 10px calc(10px + env(safe-area-inset-bottom)) 10px;
+            background: #202c33;
+            gap: 8px;
+            align-items: center;
+            border-top: 1px solid rgba(134, 150, 160, 0.12);
+        }
             .avatar { 
                 width: 42px; 
                 height: 42px; 
@@ -80,39 +90,44 @@ async def serve_ui():
             .header-info h2 { font-size: 15px; font-weight: 600; color: #e9edef; }
             .header-info p { font-size: 11.5px; color: #8696a0; }
 
-            .messages { 
-                flex: 1; 
-                padding: 16px; 
-                overflow-y: auto; 
-                display: flex; 
-                flex-direction: column; 
-                gap: 10px; 
-                background: #0b141a; 
-            }
+            .messages {
+            flex: 1;
+            padding: 12px 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: #0b141a;
+        }
 
-            .msg { 
-                max-width: 82%; 
-                padding: 9px 13px; 
-                border-radius: 8px; 
-                font-size: 14.5px; 
-                line-height: 1.45; 
-                word-wrap: break-word; 
-                white-space: pre-wrap; 
-            }
-            .bot { 
-                background: #202c33; 
-                color: #e9edef; 
-                align-self: flex-start; 
-                border-top-left-radius: 2px; 
-                box-shadow: 0 1px 1px rgba(0,0,0,0.15); 
-            }
-            .user { 
-                background: #005c4b; 
-                color: #e9edef; 
-                align-self: flex-end; 
-                border-top-right-radius: 2px; 
-                box-shadow: 0 1px 1px rgba(0,0,0,0.15); 
-            }
+        .msg {
+            max-width: 82%;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14.2px;
+            line-height: 1.38;
+            word-wrap: break-word;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+            letter-spacing: 0.15px;
+        }
+
+        /* Bot Message: WhatsApp incoming message tone & subtle top-left curve */
+        .bot {
+            background: #202c33;
+            color: #e9edef;
+            align-self: flex-start;
+            border-top-left-radius: 0px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* User Message: WhatsApp outgoing emerald tint & subtle top-right curve */
+        .user {
+            background: #005c4b;
+            color: #e9edef;
+            align-self: flex-end;
+            border-top-right-radius: 0px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
 
             .quick-chips { 
                 display: flex; 
