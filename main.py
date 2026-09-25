@@ -212,11 +212,7 @@ async def serve_ui():
                 </div>
             </div>
             
-            <div class="messages" id="chatBox">
-                <div class="msg bot">Hello dost! 👋 Youth Library Khaira Khurd me aapka swagat hai.
-
-Pehle aapka shubh naam aur 10-digit mobile number bataiye, fir solid taiyari shuru karte hain! 🎯</div>
-            </div>
+            <div class="msg bot">Hey friend!👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</div>
 
             <div class="quick-chips">
                 <span class="chip" onclick="sendQuick('Library fees, timings aur desk rules kya hain?')">Library Rules & Fees</span>
@@ -226,13 +222,64 @@ Pehle aapka shubh naam aur 10-digit mobile number bataiye, fir solid taiyari shu
             </div>
 
             <div class="input-area">
-                <input type="text" id="userInput" placeholder="Apna reply ya sawal likhein..." onkeypress="handleKey(event)" />
-                <button onclick="sendMessage()">➤</button>
-            </div>
+    <button id="micBtn" onclick="toggleMic()" style="background:transparent; border:none; color:#8696a0; font-size:18px; width:34px; height:34px; cursor:pointer; display:flex; align-items:center; justify-content:center;">🎤</button>
+    <input type="text" id="userInput" placeholder="Apna reply ya sawal likhein..." onkeypress="if(event.key==='Enter') sendMessage()" />
+    <button onclick="sendMessage()">➤</button>
+</div>
             <div class="branding">Designed & Developed by Kuldeep Guleria • Khaira Khurd</div>
         </div>
 
         <script>
+        // --- MIC (Voice to Text) ---
+        let recognition;
+        let isRecording = false;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'hi-IN';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+                const text = event.results[0][0].transcript;
+                document.getElementById("userInput").value = text;
+                sendMessage();
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                const mBtn = document.getElementById("micBtn");
+                if (mBtn) mBtn.innerText = "🎤";
+            };
+        }
+
+        function toggleMic() {
+            if (!recognition) {
+                alert("Aapke browser/phone me voice support uplabdh nahi hai.");
+                return;
+            }
+            const mBtn = document.getElementById("micBtn");
+            if (isRecording) {
+                recognition.stop();
+                isRecording = false;
+                if (mBtn) mBtn.innerText = "🎤";
+            } else {
+                recognition.start();
+                isRecording = true;
+                if (mBtn) mBtn.innerText = "🔴";
+            }
+        }
+
+        // --- SPEAKER (Text to Voice) ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'hi-IN';
+                utter.rate = 1.0;
+                window.speechSynthesis.speak(utter);
+            }
+        }
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
 
         let studentName = localStorage.getItem("yl_name") || "";
