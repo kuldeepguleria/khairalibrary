@@ -32,6 +32,24 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage]
+    
+@app.get("/manifest.json")
+async def get_manifest():
+    return {
+        "name": "Youth Library Khaira Khurd",
+        "short_name": "Youth Library",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#0b141a",
+        "theme_color": "#202c33",
+        "icons": [
+            {
+                "src": "https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    }
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_ui():
@@ -41,6 +59,11 @@ async def serve_ui():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="theme-color" content="#202c33">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
         <title>Khaira Library - Study Mentor</title>
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
