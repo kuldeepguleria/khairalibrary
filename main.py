@@ -44,7 +44,7 @@ async def serve_ui():
         <title>Khaira Library - Study Mentor</title>
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-            body { background: #121b22; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+            body { background: #121b22; display: flex; justify-content: center; align-items: flex-start; height: 100vh; overflow: hidden; }
             
             .chat-container { 
                 width: 100%; 
