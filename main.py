@@ -218,6 +218,41 @@ Pehle aapka shubh naam aur 10-digit mobile number bataiye, fir solid taiyari shu
         </div>
 
         <script>
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
+
+        let studentName = localStorage.getItem("yl_name") || "";
+        let studentPhone = localStorage.getItem("yl_phone") || "";
+
+        window.addEventListener("DOMContentLoaded", () => {
+            if (!studentName || !studentPhone) {
+                document.getElementById("regModal").style.display = "flex";
+            } else {
+                document.getElementById("regModal").style.display = "none";
+            }
+        });
+
+        function submitReg() {
+            const name = document.getElementById("regName").value.trim();
+            const phone = document.getElementById("regPhone").value.trim();
+            if (!name || phone.length !== 10 || isNaN(phone)) {
+                alert("Kripya sahi Name aur 10-digit Mobile number daalein");
+                return;
+            }
+
+            fetch(SHEET_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: name, phone: phone })
+            });
+
+            localStorage.setItem("yl_name", name);
+            localStorage.setItem("yl_phone", phone);
+            studentName = name;
+            studentPhone = phone;
+
+            document.getElementById("regModal").style.display = "none";
+        }
             let conversationHistory = [];
 
             conversationHistory.push({
