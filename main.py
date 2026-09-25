@@ -113,7 +113,7 @@ async def serve_ui():
             .header-info h2 { font-size: 15px; font-weight: 600; color: #e9edef; }
             .header-info p { font-size: 11.5px; color: #8696a0; }
 
-            .messages {
+            .messages, #chatBox {
             flex: 1;
             padding: 12px 14px;
             overflow-y: auto;
