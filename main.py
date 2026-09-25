@@ -75,6 +75,7 @@ async def serve_ui():
             height: 100dvh;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             background-color: #0b141a;
             position: relative;
         }
@@ -232,25 +233,27 @@ async def serve_ui():
                 <div class="header-info">
                     <h2>Youth Library Study Mentor</h2>
                     <p>Designed & Developed by Kuldeep Guleria • Khaira Khurd</p>
-                </div>
             </div>
-            
-            <div class="msg bot">Hey friend!👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</div>
-
-            <div class="quick-chips">
-                <span class="chip" onclick="sendQuick('Library fees, timings aur desk rules kya hain?')">Library Rules & Fees</span>
-                <span class="chip" onclick="sendQuick('Pichhle kuch dino se padhai me bilkul focus nahi ban raha')">Focus Problem</span>
-                <span class="chip" onclick="sendQuick('Mock test me marks nahi badh rahe, kya karu?')">Mock Test Marks</span>
-                <span class="chip" onclick="sendQuick('Maths ya Reasoning ka 1 tricky quiz sawaal pucho')">Subject Quiz</span>
             </div>
 
-            <div class="input-area">
-    <button id="micBtn" onclick="toggleMic()" style="background:transparent; border:none; color:#8696a0; font-size:18px; width:34px; height:34px; cursor:pointer; display:flex; align-items:center; justify-content:center;">🎤</button>
-    <input type="text" id="userInput" placeholder="Apna reply ya sawal likhein..." onkeypress="if(event.key==='Enter') sendMessage()" />
-    <button onclick="sendMessage()">➤</button>
-</div>
-            <div class="branding">Designed & Developed by Kuldeep Guleria • Khaira Khurd</div>
+        <div class="messages" id="chatBox">
+            <div class="msg bot">Hey friend! 👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</div>
         </div>
+
+        <div class="quick-chips">
+            <span class="chip" onclick="sendQuick('Library fees, timings aur desk rules kya hain?')">Library Rules & Fees</span>
+            <span class="chip" onclick="sendQuick('Pichhle kuch dino se padhai me bilkul focus nahi ban raha')">Focus Problem</span>
+            <span class="chip" onclick="sendQuick('Mock test me marks nahi badh rahe, kya karu?')">Mock Test Marks</span>
+            <span class="chip" onclick="sendQuick('Maths ya Reasoning ka 1 tricky quiz sawaal pucho')">Subject Quiz</span>
+        </div>
+
+        <div class="input-area">
+            <button id="micBtn" onclick="toggleMic()" style="background:transparent; border:none; font-size:18px; width:34px; height:34px; cursor:pointer;">🎤</button>
+            <input type="text" id="userInput" placeholder="Apna reply ya sawal likhein..." onkeypress="if(event.key==='Enter') sendMessage()" />
+            <button onclick="sendMessage()">➤</button>
+        </div>
+
+        <div class="branding">Designed & Developed by Kuldeep Guleria • Khaira Khurd</div>
 
         <script>
         // --- MIC (Voice to Text) ---
