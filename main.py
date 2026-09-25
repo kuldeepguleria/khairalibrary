@@ -330,19 +330,26 @@ async def serve_ui():
                 return;
             }
 
-            fetch(SHEET_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: name, phone: phone })
-            });
+            // 1. Popup ko turant screen se hatao
+            document.getElementById("regModal").style.display = "none";
 
+            // 2. Local storage me save karo
             localStorage.setItem("yl_name", name);
             localStorage.setItem("yl_phone", phone);
             studentName = name;
             studentPhone = phone;
 
-            document.getElementById("regModal").style.display = "none";
+            // 3. Background me Google Sheet ko bhejo
+            try {
+                fetch(SHEET_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: name, phone: phone })
+                });
+            } catch (err) {
+                console.log("Sheet sync error:", err);
+            }
         }
             let conversationHistory = [];
 
