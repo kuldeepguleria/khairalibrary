@@ -379,7 +379,8 @@ async def serve_ui():
                         body: JSON.stringify({ messages: conversationHistory })
                     });
                     const data = await res.json();
-                    loadingDiv.innerText = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara message karein.");
+                    const replyTxt = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara try karein.");
+                    loadingDiv.innerHTML = <span>${replyTxt}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>;
                     conversationHistory.push({ role: "assistant", content: data.reply });
                 } catch(err) {
                     loadingDiv.innerText = "Server se contact nahi ho pa raha hai.";
@@ -391,7 +392,12 @@ async def serve_ui():
                 const chatBox = document.getElementById("chatBox");
                 const div = document.createElement("div");
                 div.className = "msg " + sender;
-                div.innerText = cleanFormat(text);
+                const cleaned = cleanFormat(text);
+            if (sender === "bot") {
+                div.innerHTML = <span>${cleaned}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>;
+            } else {
+                div.innerText = cleaned;
+            }
                 chatBox.appendChild(div);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
