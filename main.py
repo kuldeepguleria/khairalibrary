@@ -36,8 +36,8 @@ class ChatRequest(BaseModel):
 @app.get("/manifest.json")
 async def get_manifest():
     return {
-        "name": "Youth Library Khaira Khurd",
-        "short_name": "Youth Library",
+        "name": "Youth Library Khaira Khurd AI",
+        "short_name": "Library Khaira AI",
         "start_url": "/",
         "display": "standalone",
         "background_color": "#0b141a",
