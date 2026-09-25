@@ -75,9 +75,9 @@ async def serve_ui():
             height: 100dvh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             background-color: #0b141a;
             position: relative;
+            overflow: hidden;
         }
 
             .header {
