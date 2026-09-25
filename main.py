@@ -93,8 +93,7 @@ async def serve_ui():
 
         .input-area {
             display: flex;
-            padding: 8px 10px calc(10px + env(safe-area-inset-bottom)) 10px;
-            background: #202c33;
+            padding: 8px 10px calc(24px + env(safe-area-inset-bottom)) 10px;
             gap: 8px;
             align-items: center;
             border-top: 1px solid rgba(134, 150, 160, 0.12);
