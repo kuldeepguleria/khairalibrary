@@ -31,7 +31,16 @@ class ChatMessage(BaseModel):
     content: str
 
 class ChatRequest(BaseModel):
-    messages: list[ChatMessage]
+    messages: list[ChatMessage] 
+    
+import httpx
+from fastapi.responses import Response
+
+@app.get("/logo.png")
+async def get_app_logo():
+    async with httpx.AsyncClient() as client:
+        r = await client.get("https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png")
+        return Response(content=r.content, media_type="image/png")
 
 @app.get("/manifest.json")
 async def get_manifest():
