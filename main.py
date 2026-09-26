@@ -293,12 +293,19 @@ async def serve_ui():
             if (isRecording) {
                 recognition.stop();
                 isRecording = false;
-                if (mBtn) mBtn.innerText = "🎤";
-            } else {
-                recognition.start();
+                            } else {
                 isVoiceQuery = true;
                 isRecording = true;
                 if (mBtn) mBtn.innerText = "🔴";
+                try {
+                    recognition.start();
+                } catch(e) {
+                    isRecording = false;
+                    if (mBtn) mBtn.innerText = "🎤";
+                    alert("Mic error: " + e.message);
+                }
+            }
+
             }
         }
 
