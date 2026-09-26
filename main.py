@@ -53,12 +53,12 @@ async def get_manifest():
         "theme_color": "#202c33",
         "icons": [
             {
-                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png",
+                "src": "/Logo.png",
                 "sizes": "192x192",
                 "type": "image/png"
             },
             {
-                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png",
+                "src": "/Logo.png",
                 "sizes": "512x512",
                 "type": "image/png"
             }
