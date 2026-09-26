@@ -294,23 +294,36 @@ async def serve_ui():
                 if (mBtn) mBtn.innerText = "🎤";
             } else {
                 recognition.start();
+                isVoiceQuery = true;
                 isRecording = true;
                 if (mBtn) mBtn.innerText = "🔴";
             }
         }
 
-                function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let spokenText = text
-                    .replace(/Khaira/gi, "खैरा")
-                    .replace(/Khurd/gi, "खुर्द")
-                    .replace(/Guleria/gi, "गुलेरिया");
-                const utter = new SpeechSynthesisUtterance(spokenText);
-                utter.lang = 'hi-IN';
-                utter.rate = 1.0;
-                window.speechSynthesis.speak(utter);
+                        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+
+            let spokenText = text.replace(/Khaira/gi, "खैरा")
+                                 .replace(/Khurd/gi, "खुर्द")
+                                 .replace(/Kuldeep/gi, "कुलदीप")
+                                 .replace(/Guleria/gi, "गुलेरिया")
+                                 .replace(/Gram Panchayat/gi, "ग्राम पंचायत")
+                                 .replace(/[*_#]/g, "");
+
+            let utterance = new SpeechSynthesisUtterance(spokenText);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.92;
+            utterance.pitch = 1.0;
+
+            let voices = window.speechSynthesis.getVoices();
+            let hindiVoice = voices.find(v => v.lang.includes('hi') || v.name.includes('Hindi') || v.name.includes('Google हिन्दी'));
+            if (hindiVoice) {
+                utterance.voice = hindiVoice;
             }
+            window.speechSynthesis.speak(utterance);
+        }
+
         }
 
 
@@ -371,6 +384,7 @@ async def serve_ui():
         function cleanFormat(text) {
             return text.replace(/\\\\/g, "").replace(/\\*/g, "");
         }
+       let isVoiceQuery = false;
 
         async function sendMessage() {
             const input = document.getElementById("userInput");
@@ -398,6 +412,11 @@ async def serve_ui():
                 const replyTxt = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara try karein.");
                 loadingDiv.innerHTML = `<span>${replyTxt}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>`;
                 conversationHistory.push({ role: "assistant", content: data.reply });
+                            if (isVoiceQuery) {
+                speakText(replyTxt);
+                isVoiceQuery = false;
+            }
+
             } catch(err) {
                 loadingDiv.innerText = "Server se contact nahi ho pa raha hai.";
             }
