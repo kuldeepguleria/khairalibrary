@@ -167,14 +167,20 @@ async def serve_ui():
             }
             .chip:active { background: #2a3942; }
 
-            .input-area { 
+                        .input-area { 
                 display: flex; 
-                padding: 8px 10px calc(24px + env(safe-area-inset-bottom)) 10px; 
+                padding-top: 8px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: max(32px, calc(16px + env(safe-area-inset-bottom, 24px))) !important; 
                 background: #202c33; 
                 gap: 8px; 
                 align-items: center; 
                 border-top: 1px solid rgba(134, 150, 160, 0.12);
+                box-sizing: border-box;
+                z-index: 999;
             }
+
             input { 
                 flex: 1; 
                 padding: 10px 16px; 
