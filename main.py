@@ -45,6 +45,11 @@ async def get_manifest():
         "icons": [
             {
                 "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png",
                 "sizes": "512x512",
                 "type": "image/png"
             }
