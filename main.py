@@ -229,7 +229,6 @@ async def serve_ui():
             </div>
 
             <div class="header" style="background-color: #1f2c34 !important; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; padding: 10px 16px;">
-
                 <img src="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 1.5px solid #d4af37;" alt="Logo">
 
                 <div class="header-info">
