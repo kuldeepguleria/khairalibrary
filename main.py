@@ -411,7 +411,7 @@ async def serve_ui():
                 });
                 const data = await res.json();
                 const replyTxt = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara try karein.");
-                loadingDiv.innerHTML = "<span>${replyTxt}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>";
+                loadingDiv.innerHTML = '<span>' + replyTxt + '</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>';
                 conversationHistory.push({ role: "assistant", content: data.reply });
                 if (isVoiceQuery) {
                     speakText(replyTxt);
