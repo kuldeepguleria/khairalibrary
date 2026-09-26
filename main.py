@@ -229,7 +229,8 @@ async def serve_ui():
             </div>
 
             <div class="header">
-                <div class="avatar">YL</div>
+                <img src="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 1.5px solid #d4af37;" alt="Logo">
+
                 <div class="header-info">
                     <h2>Youth Library Study Mentor</h2>
                     <p>Designed & Developed by Kuldeep Guleria • Khaira Khurd</p>
