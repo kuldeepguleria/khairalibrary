@@ -33,19 +33,10 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] 
     
-import httpx
-from fastapi.responses import Response
-
-@app.get("/logo.png")
-async def get_app_logo():
-    async with httpx.AsyncClient() as client:
-        r = await client.get("https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png")
-        return Response(content=r.content, media_type="image/png")
-
 @app.get("/manifest.json")
 async def get_manifest():
     return {
-        "name": "Youth Library Khaira Khurd AI",
+        "name": "Youth Library Khaira Khurd",
         "short_name": "Library Khaira AI",
         "start_url": "/",
         "display": "standalone",
@@ -53,17 +44,13 @@ async def get_manifest():
         "theme_color": "#202c33",
         "icons": [
             {
-                "src": "/Logo.png",
-                "sizes": "192x192",
-                "type": "image/png"
-            },
-            {
-                "src": "/Logo.png",
+                "src": "https://img.icons8.com/color/512/open-book.png",
                 "sizes": "512x512",
                 "type": "image/png"
             }
         ]
     }
+
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_ui():
