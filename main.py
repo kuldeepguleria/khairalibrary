@@ -264,9 +264,9 @@ async def serve_ui():
         let isRecording = false;
         let isVoiceQuery = false;
 
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRec) {
+            recognition = new SpeechRec();
             recognition.lang = 'hi-IN';
             recognition.continuous = false;
             recognition.interimResults = false;
