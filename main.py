@@ -291,16 +291,20 @@ async def serve_ui():
             }
         }
 
-        // --- SPEAKER (Text to Voice) ---
-        function speakText(text) {
+                function speakText(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
+                let spokenText = text
+                    .replace(/Khaira/gi, "खैरा")
+                    .replace(/Khurd/gi, "खुर्द")
+                    .replace(/Guleria/gi, "गुलेरिया");
+                const utter = new SpeechSynthesisUtterance(spokenText);
                 utter.lang = 'hi-IN';
                 utter.rate = 1.0;
                 window.speechSynthesis.speak(utter);
             }
         }
+
 
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
 
