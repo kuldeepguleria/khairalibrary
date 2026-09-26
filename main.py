@@ -326,7 +326,7 @@ async def serve_ui():
             window.speechSynthesis.speak(utterance);
         }
 
-        }
+        
 
 
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
