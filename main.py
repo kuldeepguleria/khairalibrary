@@ -262,6 +262,8 @@ async def serve_ui():
         // --- MIC (Voice to Text) ---
         let recognition;
         let isRecording = false;
+        let isVoiceQuery = false;
+
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
