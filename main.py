@@ -264,7 +264,7 @@ async def serve_ui():
         let isRecording = false;
         let isVoiceQuery = false;
 
-                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRec) {
             recognition = new SpeechRec();
             recognition.lang = 'hi-IN';
@@ -291,9 +291,10 @@ async def serve_ui():
             }
             const mBtn = document.getElementById("micBtn");
             if (isRecording) {
-                recognition.stop();
+                try { recognition.stop(); } catch(e) {}
                 isRecording = false;
-                            } else {
+                if (mBtn) mBtn.innerText = "🎤";
+            } else {
                 isVoiceQuery = true;
                 isRecording = true;
                 if (mBtn) mBtn.innerText = "🔴";
@@ -305,11 +306,9 @@ async def serve_ui():
                     alert("Mic error: " + e.message);
                 }
             }
-
-            }
         }
 
-                        function speakText(text) {
+        function speakText(text) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
 
@@ -332,9 +331,6 @@ async def serve_ui():
             }
             window.speechSynthesis.speak(utterance);
         }
-
-        
-
 
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
 
@@ -365,17 +361,14 @@ async def serve_ui():
                 return;
             }
 
-            // 1. Popup ko turant screen se hatao
             const modal = document.getElementById("regModal");
             if (modal) modal.style.display = "none";
 
-            // 2. Local storage me save karo
             localStorage.setItem("yl_name", name);
             localStorage.setItem("yl_phone", phone);
             studentName = name;
             studentPhone = phone;
 
-            // 3. Background me Google Sheet ko bhejo
             try {
                 fetch(SHEET_URL, {
                     method: "POST",
@@ -393,7 +386,6 @@ async def serve_ui():
         function cleanFormat(text) {
             return text.replace(/\\\\/g, "").replace(/\\*/g, "");
         }
-       let isVoiceQuery = false;
 
         async function sendMessage() {
             const input = document.getElementById("userInput");
@@ -419,13 +411,12 @@ async def serve_ui():
                 });
                 const data = await res.json();
                 const replyTxt = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara try karein.");
-                loadingDiv.innerHTML = `<span>${replyTxt}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>`;
+                loadingDiv.innerHTML = <span>${replyTxt}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>;
                 conversationHistory.push({ role: "assistant", content: data.reply });
-                            if (isVoiceQuery) {
-                speakText(replyTxt);
-                isVoiceQuery = false;
-            }
-
+                if (isVoiceQuery) {
+                    speakText(replyTxt);
+                    isVoiceQuery = false;
+                }
             } catch(err) {
                 loadingDiv.innerText = "Server se contact nahi ho pa raha hai.";
             }
