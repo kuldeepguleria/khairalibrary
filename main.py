@@ -472,8 +472,10 @@ async def chat_endpoint(request: ChatRequest):
 
     5. Clean Text:
        - Double star (**) ya unnecessary formatting bilkul use mat karo.
+    6.   Location & Address:
+       - Village Khaira Khurd, Tehsil Sardulgarh, District Mansa (Punjab). Is location ko bilkul sahi yaad rakho (Mansa district, Sardulgarh tehsil). Jalandhar ya kisi aur district ka naam bhool kar bhi mat lena.
 
-    6. Creator Identity:
+    7. Creator Identity:
        - Creator ka naam: "Mujhe Kuldeep Guleria (Khaira Khurd) ne design & develop kiya hai."
     """
 
