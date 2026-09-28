@@ -1,7 +1,8 @@
 import os
+import edge_tts
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from pydantic import BaseModel
 from groq import Groq
 
@@ -32,7 +33,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] 
-    
+
 @app.get("/manifest.json")
 async def get_manifest():
     return {
@@ -51,6 +52,14 @@ async def get_manifest():
         ]
     }
 
+@app.get("/tts")
+async def text_to_speech(text: str):
+    communicate = edge_tts.Communicate(text, "hi-IN-SwaraNeural")
+    audio_data = bytearray()
+    async for chunk in communicate.stream():
+        if chunk["type"] == "audio":
+            audio_data.extend(chunk["data"])
+    return Response(content=bytes(audio_data), media_type="audio/mpeg")
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_ui():
@@ -95,7 +104,6 @@ async def serve_ui():
                 overflow: hidden; 
             }
             
-            /* Container with subtle micro woven texture */
             .chat-container {
                 width: 100%;
                 max-width: 480px;
@@ -114,7 +122,6 @@ async def serve_ui():
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
-            /* 3D Background Canvas Layer */
             #webgl-canvas {
                 position: absolute;
                 inset: 0;
@@ -125,7 +132,6 @@ async def serve_ui():
                 opacity: 0.55;
             }
 
-            /* 40% Transparent Fluid Satin Wave Header Strip */
             .header {
                 background: 
                     radial-gradient(circle at 85% -20%, rgba(238, 220, 179, 0.60) 0%, transparent 60%),
@@ -187,7 +193,6 @@ async def serve_ui():
                 z-index: 2;
             }
 
-            /* Slim Aesthetic Message Bubbles with Golden Net Texture */
             .msg {
                 max-width: 84%;
                 padding: 6px 14px;
@@ -201,7 +206,6 @@ async def serve_ui():
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             }
 
-            /* Bot Message: Slim Left Bubble with Left Arrow Pointer */
             .bot {
                 align-self: flex-start;
                 margin-left: 10px;
@@ -237,7 +241,6 @@ async def serve_ui():
                 border-bottom: 8px solid transparent;
             }
 
-            /* User Message: Slim Horizontal Bar with Sharp Needle Tail */
             .user {
                 align-self: flex-end;
                 margin-right: 14px;
@@ -250,7 +253,6 @@ async def serve_ui():
                     repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.22) 5px, rgba(197, 160, 89, 0.22) 6px);
             }
 
-            /* User Sharp Horizontal Pointed Tail */
             .user::before {
                 content: "";
                 position: absolute;
@@ -338,7 +340,6 @@ async def serve_ui():
             }
             input::placeholder { color: #a29e96; }
 
-            /* Modern Studio Mic Button */
             .mic-btn-modern {
                 background: #ffffff;
                 border: 1px solid var(--gold-border);
@@ -364,7 +365,6 @@ async def serve_ui():
                 border-color: var(--gold-accent);
             }
 
-            /* Modern Pulsing Red Button when Active */
             .mic-btn-modern.recording {
                 background: #ef4444;
                 border-color: #ef4444;
@@ -413,7 +413,6 @@ async def serve_ui():
     </head>
     <body>
         <div class="chat-container">
-            <!-- 3D Three.js Moving Torus & Gold Cage Canvas -->
             <canvas id="webgl-canvas"></canvas>
 
             <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(23, 23, 23, 0.55); backdrop-filter:blur(8px); z-index:999; justify-content:center; align-items:center; padding:20px;">
@@ -460,7 +459,6 @@ async def serve_ui():
         </div>
 
         <script>
-        // --- 3D Background Three.js Animation ---
         const canvas = document.getElementById('webgl-canvas');
         const container = document.querySelector('.chat-container');
         const scene = new THREE.Scene();
@@ -584,28 +582,20 @@ async def serve_ui():
             }
         }
 
-        function speakText(text) {
-            if (!('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-
-            let spokenText = text.replace(/Khaira/gi, "खैरा")
-                                 .replace(/Khurd/gi, "खुर्द")
-                                 .replace(/Kuldeep/gi, "कुलदीप")
-                                 .replace(/Guleria/gi, "गुलेरिया")
-                                 .replace(/Gram Panchayat/gi, "ग्राम पंचायत")
-                                 .replace(/[*_#]/g, "");
-
-            let utterance = new SpeechSynthesisUtterance(spokenText);
-            utterance.lang = 'hi-IN';
-            utterance.rate = 0.92;
-            utterance.pitch = 1.0;
-
-            let voices = window.speechSynthesis.getVoices();
-            let hindiVoice = voices.find(v => v.lang.includes('hi') || v.name.includes('Hindi') || v.name.includes('Google हिन्दी'));
-            if (hindiVoice) {
-                utterance.voice = hindiVoice;
+        // --- EDGE-TTS Natural Swara Voice Player ---
+        let currentAudio = null;
+        async function speakText(text) {
+            try {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio = null;
+                }
+                let clean = text.replace(/[*_#]/g, "");
+                currentAudio = new Audio("/tts?text=" + encodeURIComponent(clean));
+                currentAudio.play();
+            } catch(e) {
+                console.log("Audio playback error:", e);
             }
-            window.speechSynthesis.speak(utterance);
         }
 
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
