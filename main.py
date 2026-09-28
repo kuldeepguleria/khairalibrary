@@ -1,7 +1,6 @@
 import os
-import edge_tts
 from dotenv import load_dotenv
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from groq import Groq
@@ -33,29 +32,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] 
-
-class TTSRequest(BaseModel):
-    text: str
-
-@app.post("/tts")
-async def generate_speech(req: TTSRequest):
-    spoken_text = (
-        req.text.replace("Khaira", "खैरा")
-        .replace("Khurd", "खुर्द")
-        .replace("Kuldeep", "कुलदीप")
-        .replace("Guleria", "गुलेरिया")
-        .replace("Gram Panchayat", "ग्राम पंचायत")
-        .replace("*", "")
-        .replace("#", "")
-    )
-    voice = "hi-IN-SwaraNeural"
-    communicate = edge_tts.Communicate(spoken_text, voice)
-    audio_data = b""
-    async for chunk in communicate.stream():
-        if chunk["type"] == "audio":
-            audio_data += chunk["data"]
-    return Response(content=audio_data, media_type="audio/mpeg")
-
+    
 @app.get("/manifest.json")
 async def get_manifest():
     return {
@@ -64,11 +41,11 @@ async def get_manifest():
         "start_url": "/",
         "display": "standalone",
         "background_color": "#fcfbf9",
-        "theme_color": "#f5f3ef",
+        "theme_color": "#fcfbf9",
         "icons": [
             {
-                "src": "https://img.icons8.com/color/512/open-book.png",
-                "sizes": "512x512",
+                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png",
+                "sizes": "500x500",
                 "type": "image/png"
             }
         ]
@@ -88,6 +65,8 @@ async def serve_ui():
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <link rel="manifest" href="/manifest.json">
+        <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png">
+        <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -605,27 +584,28 @@ async def serve_ui():
             }
         }
 
-        let currentAudio = null;
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
 
-        async function speakText(text) {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio = null;
+            let spokenText = text.replace(/Khaira/gi, "खैरा")
+                                 .replace(/Khurd/gi, "खुर्द")
+                                 .replace(/Kuldeep/gi, "कुलदीप")
+                                 .replace(/Guleria/gi, "गुलेरिया")
+                                 .replace(/Gram Panchayat/gi, "ग्राम पंचायत")
+                                 .replace(/[*_#]/g, "");
+
+            let utterance = new SpeechSynthesisUtterance(spokenText);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.92;
+            utterance.pitch = 1.0;
+
+            let voices = window.speechSynthesis.getVoices();
+            let hindiVoice = voices.find(v => v.lang.includes('hi') || v.name.includes('Hindi') || v.name.includes('Google हिन्दी'));
+            if (hindiVoice) {
+                utterance.voice = hindiVoice;
             }
-            try {
-                const res = await fetch("/tts", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: text })
-                });
-                if (!res.ok) throw new Error("TTS request failed");
-                const blob = await res.blob();
-                const audioUrl = URL.createObjectURL(blob);
-                currentAudio = new Audio(audioUrl);
-                currentAudio.play();
-            } catch (err) {
-                console.error("Natural Voice play failed:", err);
-            }
+            window.speechSynthesis.speak(utterance);
         }
 
         const SHEET_URL = "https://script.google.com/macros/s/AKfycbzNk_9fOCmXT7cSluwNvA7Ii5IT5DJmBb-Ak5QY4agrN6AbjRrFQRkR0SA5xuvgFLdh/exec";
