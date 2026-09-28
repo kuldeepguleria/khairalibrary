@@ -77,7 +77,8 @@ async def serve_ui():
                 --text-secondary: #74726d;
                 --gold-accent: #c5a059;
                 --gold-light: #eedcb3;
-                --border-subtle: rgba(197, 160, 89, 0.28);
+                --gold-net: rgba(197, 160, 89, 0.22);
+                --gold-border: rgba(197, 160, 89, 0.45);
             }
 
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -91,6 +92,7 @@ async def serve_ui():
                 overflow: hidden; 
             }
             
+            /* Container with subtle micro woven texture */
             .chat-container {
                 width: 100%;
                 max-width: 480px;
@@ -98,38 +100,44 @@ async def serve_ui():
                 display: flex;
                 flex-direction: column;
                 background-color: var(--bg);
-                background-image: radial-gradient(rgba(197, 160, 89, 0.05) 1px, transparent 0);
-                background-size: 20px 20px;
+                background-image: 
+                    radial-gradient(var(--gold-net) 0.75px, transparent 0.75px),
+                    radial-gradient(rgba(23, 23, 23, 0.03) 0.75px, transparent 0.75px);
+                background-size: 16px 16px, 8px 8px;
+                background-position: 0 0, 4px 4px;
                 position: relative;
                 overflow: hidden;
                 border-left: 1px solid rgba(197, 160, 89, 0.15);
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
-            /* Transparent Off-White Golden Header Strip */
+            /* Transparent Golden Net Embroidery Strip */
             .header {
-                background: linear-gradient(135deg, rgba(252, 251, 249, 0.88), rgba(247, 243, 233, 0.82)) !important;
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
+                background: 
+                    linear-gradient(rgba(252, 251, 249, 0.88), rgba(247, 243, 233, 0.84)),
+                    repeating-linear-gradient(45deg, transparent, transparent 7px, var(--gold-net) 7px, var(--gold-net) 8px),
+                    repeating-linear-gradient(-45deg, transparent, transparent 7px, var(--gold-net) 7px, var(--gold-net) 8px) !important;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
                 color: var(--text-primary);
-                padding: 11px 16px;
+                padding: 10px 16px;
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                border-bottom: 1px solid var(--border-subtle);
-                box-shadow: 0 4px 20px rgba(197, 160, 89, 0.08);
+                border-bottom: 1.5px solid var(--gold-border);
+                box-shadow: 0 4px 18px rgba(197, 160, 89, 0.12);
                 position: sticky;
                 top: 0;
                 z-index: 100;
             }
 
             .header img {
-                width: 42px;
-                height: 42px;
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 object-fit: cover;
                 border: 1.5px solid var(--gold-accent);
-                box-shadow: 0 2px 8px rgba(197, 160, 89, 0.25);
+                box-shadow: 0 2px 8px rgba(197, 160, 89, 0.3);
             }
 
             .header-info h2 { 
@@ -140,7 +148,7 @@ async def serve_ui():
                 letter-spacing: 0.02em;
             }
             .header-info p { 
-                font-size: 11px; 
+                font-size: 10.5px; 
                 color: var(--text-secondary); 
                 letter-spacing: 0.04em;
             }
@@ -152,40 +160,95 @@ async def serve_ui():
                 overflow-y: auto;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 12px;
                 background: transparent;
             }
 
-            /* Transparent Glass Message Bubbles */
+            /* Slim Aesthetic Message Bubbles with Golden Net Texture */
             .msg {
-                max-width: 82%;
-                padding: 10px 14px;
-                border-radius: 14px;
-                font-size: 14px;
-                line-height: 1.5;
+                max-width: 84%;
+                padding: 6px 14px;
+                font-size: 13.5px;
+                line-height: 1.45;
                 word-wrap: break-word;
                 letter-spacing: 0.01em;
                 position: relative;
                 backdrop-filter: blur(8px);
                 -webkit-backdrop-filter: blur(8px);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             }
 
+            /* Bot Message: Slim Left Bubble with Left Arrow Pointer */
             .bot {
-                background: rgba(255, 255, 255, 0.65);
-                color: var(--text-primary);
                 align-self: flex-start;
-                border-top-left-radius: 2px;
-                border: 1px solid rgba(23, 23, 23, 0.08);
-                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+                margin-left: 10px;
+                border-radius: 2px 8px 8px 8px;
+                border: 1px solid var(--gold-border);
+                color: var(--text-primary);
+                background: 
+                    linear-gradient(rgba(255, 255, 255, 0.72), rgba(250, 248, 244, 0.65)),
+                    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.16) 5px, rgba(197, 160, 89, 0.16) 6px),
+                    repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.16) 5px, rgba(197, 160, 89, 0.16) 6px);
             }
 
+            .bot::before {
+                content: "";
+                position: absolute;
+                left: -9px;
+                top: 0px;
+                width: 0;
+                height: 0;
+                border-top: 0px solid transparent;
+                border-right: 9px solid var(--gold-border);
+                border-bottom: 9px solid transparent;
+            }
+            .bot::after {
+                content: "";
+                position: absolute;
+                left: -7.5px;
+                top: 1px;
+                width: 0;
+                height: 0;
+                border-top: 0px solid transparent;
+                border-right: 8px solid #fdfcfa;
+                border-bottom: 8px solid transparent;
+            }
+
+            /* User Message: Slim Horizontal Bar with Sharp Needle Tail (Hand-drawn Match) */
             .user {
-                background: rgba(197, 160, 89, 0.15);
-                color: var(--text-primary);
                 align-self: flex-end;
-                border-top-right-radius: 2px;
-                border: 1px solid rgba(197, 160, 89, 0.35);
-                box-shadow: 0 4px 14px rgba(197, 160, 89, 0.07);
+                margin-right: 14px;
+                border-radius: 6px 2px 6px 6px;
+                border: 1.2px solid var(--gold-accent);
+                color: var(--text-primary);
+                background: 
+                    linear-gradient(rgba(247, 240, 226, 0.75), rgba(242, 232, 212, 0.65)),
+                    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.22) 5px, rgba(197, 160, 89, 0.22) 6px),
+                    repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.22) 5px, rgba(197, 160, 89, 0.22) 6px);
+            }
+
+            /* User Sharp Horizontal Pointed Tail */
+            .user::before {
+                content: "";
+                position: absolute;
+                right: -13px;
+                top: 3px;
+                width: 0;
+                height: 0;
+                border-top: 4px solid transparent;
+                border-left: 13px solid var(--gold-accent);
+                border-bottom: 5px solid transparent;
+            }
+            .user::after {
+                content: "";
+                position: absolute;
+                right: -11px;
+                top: 4px;
+                width: 0;
+                height: 0;
+                border-top: 3px solid transparent;
+                border-left: 11px solid #f6eedc;
+                border-bottom: 4px solid transparent;
             }
 
             .quick-chips { 
@@ -194,17 +257,17 @@ async def serve_ui():
                 gap: 8px; 
                 overflow-x: auto; 
                 padding: 10px 14px; 
-                background: rgba(252, 251, 249, 0.85); 
+                background: rgba(252, 251, 249, 0.88); 
                 backdrop-filter: blur(10px);
-                border-top: 1px solid var(--border-subtle); 
+                border-top: 1px solid var(--gold-border); 
                 scrollbar-width: none; 
             }
             .quick-chips::-webkit-scrollbar { display: none; }
             .chip { 
                 background: rgba(255, 255, 255, 0.85); 
-                border: 1px solid var(--border-subtle); 
+                border: 1px solid var(--gold-border); 
                 color: #8c6e2d; 
-                padding: 7px 14px; 
+                padding: 6px 14px; 
                 border-radius: 20px; 
                 font-size: 12px; 
                 font-weight: 500;
@@ -227,33 +290,34 @@ async def serve_ui():
                 backdrop-filter: blur(12px);
                 gap: 10px; 
                 align-items: center; 
-                border-top: 1px solid var(--border-subtle);
+                border-top: 1px solid var(--gold-border);
                 box-sizing: border-box;
                 z-index: 999;
             }
 
             input { 
                 flex: 1; 
-                padding: 11px 18px; 
+                padding: 10px 16px; 
                 background: #ffffff; 
-                border: 1px solid rgba(23, 23, 23, 0.09); 
+                border: 1px solid var(--gold-border); 
                 border-radius: 24px; 
                 outline: none; 
-                font-size: 14.5px; 
+                font-size: 14px; 
                 color: var(--text-primary); 
                 transition: border-color 0.3s;
             }
             input:focus {
                 border-color: var(--gold-accent);
+                box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.2);
             }
             input::placeholder { color: #a29e96; }
 
             /* Modern Studio Mic Button */
             .mic-btn-modern {
                 background: #ffffff;
-                border: 1px solid var(--border-subtle);
-                width: 42px;
-                height: 42px;
+                border: 1px solid var(--gold-border);
+                width: 40px;
+                height: 40px;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
@@ -291,8 +355,8 @@ async def serve_ui():
                 background: var(--text-primary); 
                 color: #fcfbf9; 
                 border: 1px solid var(--text-primary); 
-                width: 42px; 
-                height: 42px; 
+                width: 40px; 
+                height: 40px; 
                 border-radius: 50%; 
                 cursor: pointer; 
                 display: flex; 
@@ -308,21 +372,21 @@ async def serve_ui():
             }
 
             .branding { 
-                font-size: 11px; 
+                font-size: 10.5px; 
                 text-align: center; 
                 color: var(--text-secondary); 
                 padding: 6px; 
                 background: var(--bg); 
                 letter-spacing: 0.08em; 
                 text-transform: uppercase;
-                border-top: 1px solid rgba(23, 23, 23, 0.04);
+                border-top: 1px solid rgba(197, 160, 89, 0.15);
             }
         </style>
     </head>
     <body>
         <div class="chat-container">
             <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(23, 23, 23, 0.55); backdrop-filter:blur(8px); z-index:999; justify-content:center; align-items:center; padding:20px;">
-                <div style="background:#ffffff; width:100%; max-width:360px; border-radius:18px; padding:24px; text-align:center; border:1px solid rgba(197, 160, 89, 0.3); box-shadow:0 20px 40px rgba(0,0,0,0.12);">
+                <div style="background:#ffffff; width:100%; max-width:360px; border-radius:18px; padding:24px; text-align:center; border:1px solid rgba(197, 160, 89, 0.35); box-shadow:0 20px 40px rgba(0,0,0,0.12);">
                     <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; color:#171717; margin-bottom:6px;">Youth Library Khaira Khurd</h3>
                     <p style="color:#74726d; font-size:12.5px; margin-bottom:18px;">Please enter your Name and Mobile number:</p>
                     <input id="regName" placeholder="Your Name" style="width:100%; padding:11px 14px; margin-bottom:10px; background:#f7f5f0; border:1px solid rgba(197, 160, 89, 0.25); border-radius:8px; color:#171717; outline:none;" />
