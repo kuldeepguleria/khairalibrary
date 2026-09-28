@@ -111,21 +111,28 @@ async def serve_ui():
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
-            /* Highly Transparent Glass Strip with Thin Golden Zari (Lattice) */
+            /* 90% Transparent Fluid Satin Wave Header Strip */
             .header {
                 background: 
-                    linear-gradient(rgba(252, 251, 249, 0.35), rgba(247, 243, 233, 0.25)),
-                    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.32) 5px, rgba(197, 160, 89, 0.32) 6px),
-                    repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.32) 5px, rgba(197, 160, 89, 0.32) 6px) !important;
-                backdrop-filter: blur(2.5px);
-                -webkit-backdrop-filter: blur(2.5px);
+                    radial-gradient(circle at 85% -20%, rgba(238, 220, 179, 0.14) 0%, transparent 60%),
+                    radial-gradient(circle at 15% 120%, rgba(197, 160, 89, 0.12) 0%, transparent 55%),
+                    linear-gradient(105deg, 
+                        rgba(255, 255, 255, 0.10) 0%, 
+                        rgba(245, 240, 230, 0.06) 35%, 
+                        rgba(205, 175, 120, 0.10) 70%, 
+                        rgba(255, 255, 255, 0.08) 100%
+                    ) !important;
+                backdrop-filter: blur(0.5px);
+                -webkit-backdrop-filter: blur(0.5px);
                 color: var(--text-primary);
                 padding: 10px 16px;
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                border-bottom: 1.2px solid rgba(197, 160, 89, 0.5);
-                box-shadow: 0 4px 16px rgba(197, 160, 89, 0.08);
+                border-bottom: 1px solid rgba(197, 160, 89, 0.35);
+                box-shadow: 
+                    0 1px 0 rgba(255, 255, 255, 0.4) inset,
+                    0 6px 20px rgba(197, 160, 89, 0.05);
                 position: sticky;
                 top: 0;
                 z-index: 100;
