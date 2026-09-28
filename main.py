@@ -111,21 +111,21 @@ async def serve_ui():
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
-            /* Transparent Golden Net Embroidery Strip */
+            /* Highly Transparent Glass Strip with Thin Golden Zari (Lattice) */
             .header {
                 background: 
-                    linear-gradient(rgba(252, 251, 249, 0.88), rgba(247, 243, 233, 0.84)),
-                    repeating-linear-gradient(45deg, transparent, transparent 7px, var(--gold-net) 7px, var(--gold-net) 8px),
-                    repeating-linear-gradient(-45deg, transparent, transparent 7px, var(--gold-net) 7px, var(--gold-net) 8px) !important;
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                    linear-gradient(rgba(252, 251, 249, 0.35), rgba(247, 243, 233, 0.25)),
+                    repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.32) 5px, rgba(197, 160, 89, 0.32) 6px),
+                    repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.32) 5px, rgba(197, 160, 89, 0.32) 6px) !important;
+                backdrop-filter: blur(2.5px);
+                -webkit-backdrop-filter: blur(2.5px);
                 color: var(--text-primary);
                 padding: 10px 16px;
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                border-bottom: 1.5px solid var(--gold-border);
-                box-shadow: 0 4px 18px rgba(197, 160, 89, 0.12);
+                border-bottom: 1.2px solid rgba(197, 160, 89, 0.5);
+                box-shadow: 0 4px 16px rgba(197, 160, 89, 0.08);
                 position: sticky;
                 top: 0;
                 z-index: 100;
@@ -214,7 +214,7 @@ async def serve_ui():
                 border-bottom: 8px solid transparent;
             }
 
-            /* User Message: Slim Horizontal Bar with Sharp Needle Tail (Hand-drawn Match) */
+            /* User Message: Slim Horizontal Bar with Sharp Needle Tail */
             .user {
                 align-self: flex-end;
                 margin-right: 14px;
