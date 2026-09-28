@@ -33,7 +33,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] 
-
+    
 @app.get("/manifest.json")
 async def get_manifest():
     return {
@@ -104,6 +104,7 @@ async def serve_ui():
                 overflow: hidden; 
             }
             
+            /* Container with subtle micro woven texture */
             .chat-container {
                 width: 100%;
                 max-width: 480px;
@@ -122,6 +123,7 @@ async def serve_ui():
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
+            /* 3D Background Canvas Layer */
             #webgl-canvas {
                 position: absolute;
                 inset: 0;
@@ -132,6 +134,7 @@ async def serve_ui():
                 opacity: 0.55;
             }
 
+            /* 40% Transparent Fluid Satin Wave Header Strip */
             .header {
                 background: 
                     radial-gradient(circle at 85% -20%, rgba(238, 220, 179, 0.60) 0%, transparent 60%),
@@ -193,6 +196,7 @@ async def serve_ui():
                 z-index: 2;
             }
 
+            /* Slim Aesthetic Message Bubbles with Golden Net Texture */
             .msg {
                 max-width: 84%;
                 padding: 6px 14px;
@@ -206,6 +210,7 @@ async def serve_ui():
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             }
 
+            /* Bot Message: Slim Left Bubble with Left Arrow Pointer */
             .bot {
                 align-self: flex-start;
                 margin-left: 10px;
@@ -241,6 +246,7 @@ async def serve_ui():
                 border-bottom: 8px solid transparent;
             }
 
+            /* User Message: Slim Horizontal Bar with Sharp Needle Tail */
             .user {
                 align-self: flex-end;
                 margin-right: 14px;
@@ -253,6 +259,7 @@ async def serve_ui():
                     repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(197, 160, 89, 0.22) 5px, rgba(197, 160, 89, 0.22) 6px);
             }
 
+            /* User Sharp Horizontal Pointed Tail */
             .user::before {
                 content: "";
                 position: absolute;
@@ -340,6 +347,7 @@ async def serve_ui():
             }
             input::placeholder { color: #a29e96; }
 
+            /* Modern Studio Mic Button */
             .mic-btn-modern {
                 background: #ffffff;
                 border: 1px solid var(--gold-border);
@@ -365,6 +373,7 @@ async def serve_ui():
                 border-color: var(--gold-accent);
             }
 
+            /* Modern Pulsing Red Button when Active */
             .mic-btn-modern.recording {
                 background: #ef4444;
                 border-color: #ef4444;
@@ -413,6 +422,7 @@ async def serve_ui():
     </head>
     <body>
         <div class="chat-container">
+            <!-- 3D Three.js Moving Torus & Gold Cage Canvas -->
             <canvas id="webgl-canvas"></canvas>
 
             <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(23, 23, 23, 0.55); backdrop-filter:blur(8px); z-index:999; justify-content:center; align-items:center; padding:20px;">
@@ -459,6 +469,7 @@ async def serve_ui():
         </div>
 
         <script>
+        // --- 3D Background Three.js Animation ---
         const canvas = document.getElementById('webgl-canvas');
         const container = document.querySelector('.chat-container');
         const scene = new THREE.Scene();
