@@ -40,8 +40,8 @@ async def get_manifest():
         "short_name": "Library Khaira AI",
         "start_url": "/",
         "display": "standalone",
-        "background_color": "#0b141a",
-        "theme_color": "#202c33",
+        "background_color": "#fcfbf9",
+        "theme_color": "#f5f3ef",
         "icons": [
             {
                 "src": "https://img.icons8.com/color/512/open-book.png",
@@ -60,15 +60,36 @@ async def serve_ui():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta name="theme-color" content="#202c33">
+        <meta name="theme-color" content="#fcfbf9">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <link rel="manifest" href="/manifest.json">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
         <title>Library Khaira AI</title>
         <style>
-            * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-            body { background: #121b22; display: flex; justify-content: center; height: 100dvh; margin: 0; padding: 0; overflow: hidden; }
+            :root {
+                --bg: #fcfbf9;
+                --surface: #f7f5f0;
+                --text-primary: #171717;
+                --text-secondary: #74726d;
+                --gold-accent: #c5a059;
+                --gold-light: #eedcb3;
+                --border-subtle: rgba(197, 160, 89, 0.28);
+            }
+
+            * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+            body { 
+                background: #ebe7df; 
+                display: flex; 
+                justify-content: center; 
+                height: 100dvh; 
+                margin: 0; 
+                padding: 0; 
+                overflow: hidden; 
+            }
             
             .chat-container {
                 width: 100%;
@@ -76,73 +97,95 @@ async def serve_ui():
                 height: 100dvh;
                 display: flex;
                 flex-direction: column;
-                background-color: #0b141a;
+                background-color: var(--bg);
+                background-image: radial-gradient(rgba(197, 160, 89, 0.05) 1px, transparent 0);
+                background-size: 20px 20px;
                 position: relative;
                 overflow: hidden;
+                border-left: 1px solid rgba(197, 160, 89, 0.15);
+                border-right: 1px solid rgba(197, 160, 89, 0.15);
             }
 
+            /* Transparent Off-White Golden Header Strip */
             .header {
-                background: #202c33;
-                color: #e9edef;
-                padding: 9px 14px;
+                background: linear-gradient(135deg, rgba(252, 251, 249, 0.88), rgba(247, 243, 233, 0.82)) !important;
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                color: var(--text-primary);
+                padding: 11px 16px;
                 display: flex;
                 align-items: center;
-                gap: 11px;
-                border-bottom: 1px solid rgba(134, 150, 160, 0.15);
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+                gap: 12px;
+                border-bottom: 1px solid var(--border-subtle);
+                box-shadow: 0 4px 20px rgba(197, 160, 89, 0.08);
+                position: sticky;
+                top: 0;
+                z-index: 100;
             }
 
-            .avatar { 
-                width: 42px; 
-                height: 42px; 
-                border-radius: 50%; 
-                background: #00a884; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center; 
-                font-weight: 700; 
-                color: #ffffff; 
-                font-size: 16px; 
+            .header img {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 1.5px solid var(--gold-accent);
+                box-shadow: 0 2px 8px rgba(197, 160, 89, 0.25);
             }
-            .header-info h2 { font-size: 15px; font-weight: 600; color: #e9edef; }
-            .header-info p { font-size: 11.5px; color: #8696a0; }
+
+            .header-info h2 { 
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 19px; 
+                font-weight: 600; 
+                color: var(--text-primary);
+                letter-spacing: 0.02em;
+            }
+            .header-info p { 
+                font-size: 11px; 
+                color: var(--text-secondary); 
+                letter-spacing: 0.04em;
+            }
 
             .messages, #chatBox {
                 flex: 1;
                 min-height: 0;
-                padding: 12px 14px;
+                padding: 16px 14px;
                 overflow-y: auto;
                 display: flex;
                 flex-direction: column;
-                gap: 6px;
-                background: #0b141a;
+                gap: 10px;
+                background: transparent;
             }
 
+            /* Transparent Glass Message Bubbles */
             .msg {
                 max-width: 82%;
-                padding: 6px 12px;
-                border-radius: 8px;
-                font-size: 14.2px;
-                line-height: 1.38;
+                padding: 10px 14px;
+                border-radius: 14px;
+                font-size: 14px;
+                line-height: 1.5;
                 word-wrap: break-word;
-                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-                letter-spacing: 0.15px;
+                letter-spacing: 0.01em;
+                position: relative;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
             }
 
             .bot {
-                background: #202c33;
-                color: #e9edef;
+                background: rgba(255, 255, 255, 0.65);
+                color: var(--text-primary);
                 align-self: flex-start;
-                border-top-left-radius: 0px;
-                border: 1px solid rgba(255, 255, 255, 0.03);
+                border-top-left-radius: 2px;
+                border: 1px solid rgba(23, 23, 23, 0.08);
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
             }
 
             .user {
-                background: #005c4b;
-                color: #e9edef;
+                background: rgba(197, 160, 89, 0.15);
+                color: var(--text-primary);
                 align-self: flex-end;
-                border-top-right-radius: 0px;
-                border: 1px solid rgba(255, 255, 255, 0.04);
+                border-top-right-radius: 2px;
+                border: 1px solid rgba(197, 160, 89, 0.35);
+                box-shadow: 0 4px 14px rgba(197, 160, 89, 0.07);
             }
 
             .quick-chips { 
@@ -150,88 +193,146 @@ async def serve_ui():
                 display: flex; 
                 gap: 8px; 
                 overflow-x: auto; 
-                padding: 8px 12px; 
-                background: #111b21; 
-                border-top: 1px solid #202c33; 
+                padding: 10px 14px; 
+                background: rgba(252, 251, 249, 0.85); 
+                backdrop-filter: blur(10px);
+                border-top: 1px solid var(--border-subtle); 
                 scrollbar-width: none; 
             }
             .quick-chips::-webkit-scrollbar { display: none; }
             .chip { 
-                background: #202c33; 
-                border: 1px solid #2a3942; 
-                color: #00a884; 
-                padding: 6px 12px; 
-                border-radius: 16px; 
-                font-size: 12.5px; 
+                background: rgba(255, 255, 255, 0.85); 
+                border: 1px solid var(--border-subtle); 
+                color: #8c6e2d; 
+                padding: 7px 14px; 
+                border-radius: 20px; 
+                font-size: 12px; 
+                font-weight: 500;
                 white-space: nowrap; 
                 cursor: pointer; 
+                transition: all 0.2s ease;
             }
-            .chip:active { background: #2a3942; }
+            .chip:active { 
+                background: var(--gold-accent); 
+                color: #ffffff; 
+            }
 
-                        .input-area { 
+            .input-area { 
                 display: flex; 
-                padding-top: 8px;
-                padding-left: 10px;
-                padding-right: 10px;
-                padding-bottom: max(32px, calc(16px + env(safe-area-inset-bottom, 24px))) !important; 
-                background: #202c33; 
-                gap: 8px; 
+                padding-top: 10px;
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-bottom: max(28px, calc(14px + env(safe-area-inset-bottom, 20px))) !important; 
+                background: rgba(252, 251, 249, 0.95); 
+                backdrop-filter: blur(12px);
+                gap: 10px; 
                 align-items: center; 
-                border-top: 1px solid rgba(134, 150, 160, 0.12);
+                border-top: 1px solid var(--border-subtle);
                 box-sizing: border-box;
                 z-index: 999;
             }
 
             input { 
                 flex: 1; 
-                padding: 10px 16px; 
-                background: #2a3942; 
-                border: none; 
-                border-radius: 20px; 
+                padding: 11px 18px; 
+                background: #ffffff; 
+                border: 1px solid rgba(23, 23, 23, 0.09); 
+                border-radius: 24px; 
                 outline: none; 
                 font-size: 14.5px; 
-                color: #e9edef; 
+                color: var(--text-primary); 
+                transition: border-color 0.3s;
             }
-            input::placeholder { color: #8696a0; }
+            input:focus {
+                border-color: var(--gold-accent);
+            }
+            input::placeholder { color: #a29e96; }
+
+            /* Modern Studio Mic Button */
+            .mic-btn-modern {
+                background: #ffffff;
+                border: 1px solid var(--border-subtle);
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--text-secondary);
+                transition: all 0.3s ease;
+                flex-shrink: 0;
+            }
+            .mic-btn-modern svg {
+                width: 19px;
+                height: 19px;
+                fill: currentColor;
+                transition: transform 0.2s;
+            }
+            .mic-btn-modern:hover {
+                color: var(--gold-accent);
+                border-color: var(--gold-accent);
+            }
+
+            /* Modern Pulsing Red Button when Active */
+            .mic-btn-modern.recording {
+                background: #ef4444;
+                border-color: #ef4444;
+                color: #ffffff;
+                animation: micPulse 1.4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            @keyframes micPulse {
+                0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.45); }
+                70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            }
+
             button.send-btn { 
-                background: #00a884; 
-                color: white; 
-                border: none; 
-                width: 40px; 
-                height: 40px; 
+                background: var(--text-primary); 
+                color: #fcfbf9; 
+                border: 1px solid var(--text-primary); 
+                width: 42px; 
+                height: 42px; 
                 border-radius: 50%; 
                 cursor: pointer; 
                 display: flex; 
                 align-items: center; 
                 justify-content: center; 
-                font-size: 16px; 
+                font-size: 15px; 
+                flex-shrink: 0;
+                transition: all 0.3s ease;
+            }
+            button.send-btn:hover {
+                background: var(--gold-accent);
+                border-color: var(--gold-accent);
             }
 
             .branding { 
                 font-size: 11px; 
                 text-align: center; 
-                color: #8696a0; 
+                color: var(--text-secondary); 
                 padding: 6px; 
-                background: #111b21; 
-                letter-spacing: 0.3px; 
+                background: var(--bg); 
+                letter-spacing: 0.08em; 
+                text-transform: uppercase;
+                border-top: 1px solid rgba(23, 23, 23, 0.04);
             }
         </style>
     </head>
     <body>
         <div class="chat-container">
-            <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(11,20,26,0.95); z-index:999; justify-content:center; align-items:center; padding:20px;">
-                <div style="background:#202c33; width:100%; max-width:360px; border-radius:12px; padding:20px; text-align:center;">
-                    <h3 style="color:#e9edef; margin-bottom:8px;">Youth Library Khaira Khurd</h3>
-                    <p style="color:#8696a0; font-size:13px; margin-bottom:15px;">Please enter your Name and Mobile number:</p>
-                    <input id="regName" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:10px; background:#121b22; border:1px solid #2a3942; border-radius:6px; color:#fff; outline:none;" />
-                    <input id="regPhone" type="tel" maxlength="10" placeholder="10-digit Mobile Number" style="width:100%; padding:10px; margin-bottom:15px; background:#121b22; border:1px solid #2a3942; border-radius:6px; color:#fff; outline:none;" />
-                    <button onclick="submitReg()" style="width:100%; padding:10px; background:#00a884; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Start Chat</button>
+            <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(23, 23, 23, 0.55); backdrop-filter:blur(8px); z-index:999; justify-content:center; align-items:center; padding:20px;">
+                <div style="background:#ffffff; width:100%; max-width:360px; border-radius:18px; padding:24px; text-align:center; border:1px solid rgba(197, 160, 89, 0.3); box-shadow:0 20px 40px rgba(0,0,0,0.12);">
+                    <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; color:#171717; margin-bottom:6px;">Youth Library Khaira Khurd</h3>
+                    <p style="color:#74726d; font-size:12.5px; margin-bottom:18px;">Please enter your Name and Mobile number:</p>
+                    <input id="regName" placeholder="Your Name" style="width:100%; padding:11px 14px; margin-bottom:10px; background:#f7f5f0; border:1px solid rgba(197, 160, 89, 0.25); border-radius:8px; color:#171717; outline:none;" />
+                    <input id="regPhone" type="tel" maxlength="10" placeholder="10-digit Mobile Number" style="width:100%; padding:11px 14px; margin-bottom:18px; background:#f7f5f0; border:1px solid rgba(197, 160, 89, 0.25); border-radius:8px; color:#171717; outline:none;" />
+                    <button onclick="submitReg()" style="width:100%; padding:12px; background:#171717; color:#fff; border:none; border-radius:30px; font-weight:600; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer;">Start Chat</button>
                 </div>
             </div>
 
-            <div class="header" style="background-color: rgba(31, 44, 52, 0.85) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; padding: 10px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 100;">
-                <img src="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 1.5px solid #d4af37;" alt="Logo">
-
+            <div class="header">
+                <img src="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/Logo.png" alt="Logo">
                 <div class="header-info">
                     <h2>Youth Library Study Mentor</h2>
                     <p>Designed & Developed by Kuldeep Guleria • Khaira Khurd</p>
@@ -239,7 +340,7 @@ async def serve_ui():
             </div>
 
             <div class="messages" id="chatBox">
-                <div class="msg bot"><span>Hey friend! 👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button></div>
+                <div class="msg bot"><span>Hey friend! 👋 Youth Library Khaira Khurd me aapka swagat hai. Aaj padhai me kis subject ya topic me guidance chahiye?</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:14px; margin-left:8px; vertical-align:middle; opacity:0.75;">🔊</button></div>
             </div>
             
             <div class="quick-chips">
@@ -250,7 +351,12 @@ async def serve_ui():
             </div>
 
             <div class="input-area">
-                <button id="micBtn" onclick="toggleMic()" style="background:transparent; border:none; font-size:18px; width:34px; height:34px; cursor:pointer;">🎤</button>
+                <button id="micBtn" class="mic-btn-modern" onclick="toggleMic()" title="Voice Typing">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </button>
                 <input type="text" id="userInput" placeholder="Apna reply ya sawal likhein..." onkeypress="if(event.key==='Enter') sendMessage()" />
                 <button class="send-btn" onclick="sendMessage()">➤</button>
             </div>
@@ -280,7 +386,7 @@ async def serve_ui():
             recognition.onend = () => {
                 isRecording = false;
                 const mBtn = document.getElementById("micBtn");
-                if (mBtn) mBtn.innerText = "🎤";
+                if (mBtn) mBtn.classList.remove("recording");
             };
         }
 
@@ -293,16 +399,16 @@ async def serve_ui():
             if (isRecording) {
                 try { recognition.stop(); } catch(e) {}
                 isRecording = false;
-                if (mBtn) mBtn.innerText = "🎤";
+                if (mBtn) mBtn.classList.remove("recording");
             } else {
                 isVoiceQuery = true;
                 isRecording = true;
-                if (mBtn) mBtn.innerText = "🔴";
+                if (mBtn) mBtn.classList.add("recording");
                 try {
                     recognition.start();
                 } catch(e) {
                     isRecording = false;
-                    if (mBtn) mBtn.innerText = "🎤";
+                    if (mBtn) mBtn.classList.remove("recording");
                     alert("Mic error: " + e.message);
                 }
             }
@@ -411,7 +517,7 @@ async def serve_ui():
                 });
                 const data = await res.json();
                 const replyTxt = cleanFormat(data.reply || "Lagta hai network slow hai, kripya dobara try karein.");
-                loadingDiv.innerHTML = '<span>' + replyTxt + '</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>';
+                loadingDiv.innerHTML = '<span>' + replyTxt + '</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:14px; margin-left:8px; vertical-align:middle; opacity:0.75;">🔊</button>';
                 conversationHistory.push({ role: "assistant", content: data.reply });
                 if (isVoiceQuery) {
                     speakText(replyTxt);
@@ -429,7 +535,7 @@ async def serve_ui():
             div.className = "msg " + sender;
             const cleaned = cleanFormat(text);
             if (sender === "bot") {
-                div.innerHTML = `<span>${cleaned}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:15px; margin-left:8px; vertical-align:middle;">🔊</button>`;
+                div.innerHTML = `<span>${cleaned}</span> <button onclick="speakText(this.previousElementSibling.innerText)" style="background:transparent; border:none; cursor:pointer; font-size:14px; margin-left:8px; vertical-align:middle; opacity:0.75;">🔊</button>`;
             } else {
                 div.innerText = cleaned;
             }
@@ -485,8 +591,7 @@ async def chat_endpoint(request: ChatRequest):
 
     try:
         completion = client.chat.completions.create(
-            model="openai/gpt-oss-120b"
-,
+            model="openai/gpt-oss-120b",
             messages=groq_messages,
             temperature=0.6,
             max_tokens=500
