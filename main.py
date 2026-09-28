@@ -68,6 +68,7 @@ async def serve_ui():
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <title>Library Khaira AI</title>
         <style>
             :root {
@@ -109,6 +110,17 @@ async def serve_ui():
                 overflow: hidden;
                 border-left: 1px solid rgba(197, 160, 89, 0.15);
                 border-right: 1px solid rgba(197, 160, 89, 0.15);
+            }
+
+            /* 3D Background Canvas Layer */
+            #webgl-canvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+                opacity: 0.55;
             }
 
             /* 40% Transparent Fluid Satin Wave Header Strip */
@@ -169,6 +181,8 @@ async def serve_ui():
                 flex-direction: column;
                 gap: 12px;
                 background: transparent;
+                position: relative;
+                z-index: 2;
             }
 
             /* Slim Aesthetic Message Bubbles with Golden Net Texture */
@@ -268,6 +282,8 @@ async def serve_ui():
                 backdrop-filter: blur(10px);
                 border-top: 1px solid var(--gold-border); 
                 scrollbar-width: none; 
+                position: relative;
+                z-index: 2;
             }
             .quick-chips::-webkit-scrollbar { display: none; }
             .chip { 
@@ -300,6 +316,7 @@ async def serve_ui():
                 border-top: 1px solid var(--gold-border);
                 box-sizing: border-box;
                 z-index: 999;
+                position: relative;
             }
 
             input { 
@@ -387,11 +404,16 @@ async def serve_ui():
                 letter-spacing: 0.08em; 
                 text-transform: uppercase;
                 border-top: 1px solid rgba(197, 160, 89, 0.15);
+                position: relative;
+                z-index: 2;
             }
         </style>
     </head>
     <body>
         <div class="chat-container">
+            <!-- 3D Three.js Moving Torus & Gold Cage Canvas -->
+            <canvas id="webgl-canvas"></canvas>
+
             <div id="regModal" style="display:none; position:fixed; inset:0; background:rgba(23, 23, 23, 0.55); backdrop-filter:blur(8px); z-index:999; justify-content:center; align-items:center; padding:20px;">
                 <div style="background:#ffffff; width:100%; max-width:360px; border-radius:18px; padding:24px; text-align:center; border:1px solid rgba(197, 160, 89, 0.35); box-shadow:0 20px 40px rgba(0,0,0,0.12);">
                     <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; color:#171717; margin-bottom:6px;">Youth Library Khaira Khurd</h3>
@@ -436,6 +458,81 @@ async def serve_ui():
         </div>
 
         <script>
+        // --- 3D Background Three.js Animation ---
+        const canvas = document.getElementById('webgl-canvas');
+        const container = document.querySelector('.chat-container');
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 6.2;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const torusGeo = new THREE.TorusGeometry(1.4, 0.3, 32, 100);
+        const matteWhiteMat = new THREE.MeshStandardMaterial({
+            color: 0xfdfdfd,
+            roughness: 0.25,
+            metalness: 0.1
+        });
+        const mainTorus = new THREE.Mesh(torusGeo, matteWhiteMat);
+        group.add(mainTorus);
+
+        const cageGeo = new THREE.IcosahedronGeometry(1.9, 1);
+        const goldMat = new THREE.MeshStandardMaterial({
+            color: 0xc5a059,
+            roughness: 0.3,
+            metalness: 0.85,
+            wireframe: true
+        });
+        const goldCage = new THREE.Mesh(cageGeo, goldMat);
+        group.add(goldCage);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xfff7e6, 1.2, 50);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        const backLight = new THREE.PointLight(0xc5a059, 0.8, 50);
+        backLight.position.set(-5, -5, -2);
+        scene.add(backLight);
+
+        let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
+        });
+
+        window.addEventListener('resize', () => {
+            if (!container) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mainTorus.rotation.x += 0.004;
+            mainTorus.rotation.y += 0.006;
+            goldCage.rotation.x -= 0.002;
+            goldCage.rotation.y -= 0.003;
+
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+
+            group.rotation.y = targetX * 1.5;
+            group.rotation.x = targetY * 1.5;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
         // --- MIC (Voice to Text) ---
         let recognition;
         let isRecording = false;
