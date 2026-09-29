@@ -45,7 +45,7 @@ async def get_manifest():
         "theme_color": "#fcfbf9",
         "icons": [
             {
-                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png",
+                "src": "https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/book-icon%20(1).png",
                 "sizes": "500x500",
                 "type": "image/png"
             }
@@ -74,8 +74,8 @@ async def serve_ui():
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <link rel="manifest" href="/manifest.json">
-        <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png">
-        <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/app-icon.png">
+        <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/book-icon%20(1).png">
+        <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/kuldeepguleria/khairalibrary/main/book-icon%20(1).png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
